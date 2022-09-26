@@ -15,3 +15,4 @@ D:\Game 3 в ряд\WinFormsApp1\obj\Debug\net6.0-windows\refint\WinFormsApp1.dl
 D:\Game 3 в ряд\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.pdb
 D:\Game 3 в ряд\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.genruntimeconfig.cache
 D:\Game 3 в ряд\WinFormsApp1\obj\Debug\net6.0-windows\ref\WinFormsApp1.dll
+D:\Game 3 в ряд\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.Properties.Resources.resources

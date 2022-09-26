@@ -10,6 +10,11 @@ namespace WinFormsApp1
 {
    public class CircleButton : Button
     {
+        public static bool Move_is = false;
+        public static CircleButton Move_CircleButton;
+        public int Position_X { get; set; }
+        public int Position_Y { get; set; }
+
         public Dictionary<int, Color> colors_button = new Dictionary<int, Color>()
         {
             { 0, Color.Red },
@@ -26,8 +31,6 @@ namespace WinFormsApp1
             this.Region = new System.Drawing.Region(grPath);
             base.OnPaint(e);
         }
-
-        
     }
 
 }
