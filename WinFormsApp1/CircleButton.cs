@@ -9,19 +9,22 @@ using System.Threading.Tasks;
 namespace WinFormsApp1
 {
    public class CircleButton : Button
-    {
+    {   
         public static bool Move_is = false;
         public static CircleButton Move_CircleButton;
         public int Position_X { get; set; }
         public int Position_Y { get; set; }
+        public int Position { get; set; }
 
         public Dictionary<int, Color> colors_button = new Dictionary<int, Color>()
         {
-            { 0, Color.Red },
             { 1, Color.Green },
             { 2, Color.Blue },
             { 3, Color.Yellow},
             { 4, Color.Violet},
+            { 5, Color.Red},
+            { 6, Color.Orange},
+            
 
         };
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
