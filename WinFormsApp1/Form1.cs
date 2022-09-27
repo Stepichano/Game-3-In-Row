@@ -14,22 +14,23 @@ namespace WinFormsApp1
         public int amount_elem = 0;
         public int number_Group = 0;
         public int amount_Group = 0;
-        public CircleButton[,] array = new CircleButton[WHIDTH, HEIGHT];
+        public CircleButton[,] array = new CircleButton[HEIGHT, WHIDTH];
         public Form1()
         {
+            Console.WriteLine("lkfsdaj;");
             InitializeComponent();
             Create_Board();
         }
 
         public void Create_Board()
         {
-            for (int i = 0; i < WHIDTH; i++)
+            for (int j = 0; j < HEIGHT; j++)
             {
-                for (int j = 0; j < HEIGHT; j++)
+                for (int i = 0; i < WHIDTH; i++)
                 {
                     CircleButton bufer_button = Create_Circle_Button(i, j);
                     this.Controls.Add(bufer_button);
-                    array[i, j] = bufer_button;
+                    array[j, i] = bufer_button;
                     bufer_button.Click += new EventHandler(Press_Button);
                 }
             }
@@ -37,7 +38,8 @@ namespace WinFormsApp1
         }
 
         public CircleButton Create_Circle_Button(int i, int j)
-        { Random rand = new Random();
+        {
+            Random rand = new Random();
             CircleButton circle_button = new CircleButton();
             circle_button.Position = rand.Next(1, 7);
             circle_button.Position_X = i;
@@ -46,29 +48,34 @@ namespace WinFormsApp1
             circle_button.Height = 45;
             circle_button.Left = 200 + 45 * i;
             circle_button.Top = 50 + 45 * j;
-            circle_button.BackColor = circle_button.colors_button[circle_button.Position];
+            circle_button.BackColor = CircleButton.colors_button[circle_button.Position];
             return circle_button;
         }
 
         public void Press_Button(object sender, EventArgs e)
-        {  
-           CircleButton circle_button = (CircleButton)sender;
-           if (CircleButton.Move_is ) {
+        {
+            CircleButton circle_button = (CircleButton)sender;
+            if (CircleButton.Move_is)
+            {
                 if (Test_In_Neigbors(CircleButton.Move_CircleButton, circle_button))
                 {
                     Swap_Circle_Buttons(CircleButton.Move_CircleButton, circle_button);
-                //    Algoritm_Searches_Group_Gorizontal();
+                    Algoritm_Searches_Group_Gorizontal();
                     Algoritm_Searches_Group_Vertical();
+                    Subsidence_buttons();
+                    Killer();
                 }
                 CircleButton.Move_is = false;
-           } else {
+            }
+            else
+            {
                 CircleButton.Move_CircleButton = circle_button;
                 CircleButton.Move_is = true;
 
-           }
+            }
 
         }
-        
+
         public void Swap_Circle_Buttons(CircleButton button1, CircleButton button2)
         {
             (button1.Position, button2.Position) = (button2.Position, button1.Position);
@@ -79,23 +86,25 @@ namespace WinFormsApp1
         public bool Test_In_Neigbors(CircleButton button1, CircleButton button2)
         {
             if ((Math.Abs(button1.Position_X - button2.Position_X) +
-                Math.Abs(button1.Position_Y - button2.Position_Y)) == 1) {
-            return true;
+                Math.Abs(button1.Position_Y - button2.Position_Y)) == 1)
+            {
+                return true;
             }
             return false;
-        }        
+        }
 
         public void Algoritm_Searches_Group_Gorizontal()
         {
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < HEIGHT; y++)
             {
                 amount_elem = 0;
                 for (int x = 0; x < WHIDTH; x++)
                 {
                     if (x == 0) { number_Group = Math.Abs(array[y, x].Position); };
-                    if (Math.Abs(array[y, x].Position) == number_Group)   {
+                    if (Math.Abs(array[y, x].Position) == number_Group)
+                    {
                         amount_elem++;
-                        if (x == 6 && amount_elem > 2)
+                        if (x == WHIDTH - 1 && amount_elem > 2)
                         {
                             amount_Group++;
                             for (int i = 0; i < amount_elem; i++)
@@ -103,7 +112,7 @@ namespace WinFormsApp1
                                 array[y, x - amount_elem + i].Position = (-1) * Math.Abs(array[y, x - amount_elem + i].Position);
                             }
                         }
-                    
+
                     }
                     else
                     {
@@ -120,32 +129,32 @@ namespace WinFormsApp1
                         number_Group = array[y, x].Position;
                     }
 
-                        
-                    
-                }
-                
 
-                
+
+                }
+
+
+
             }
         }
 
         public void Algoritm_Searches_Group_Vertical()
         {
-            for (int x = 0; x < WHIDTH - 1; x++)
+            for (int x = 0; x < WHIDTH; x++)
             {
                 amount_elem = 0;
-                for (int y = 0; y < Height - 1; y++)
+                for (int y = 0; y < HEIGHT; y++)
                 {
                     if (y == 0) { number_Group = Math.Abs(array[y, x].Position); };
                     if (Math.Abs(array[y, x].Position) == number_Group)
                     {
                         amount_elem++;
-                        if (y == Height && amount_elem > 2)
+                        if (y == HEIGHT - 1 && amount_elem > 2)
                         {
                             amount_Group++;
                             for (int i = 0; i < amount_elem; i++)
                             {
-                                array[y - amount_elem + i, x].Position = (-1) * Math.Abs(array[y, x - amount_elem + i].Position);
+                                array[y - amount_elem + i, x].Position = (-1) * Math.Abs(array[y - amount_elem + i, x].Position);
                             }
                         }
 
@@ -157,7 +166,7 @@ namespace WinFormsApp1
                             amount_Group++;
                             for (int i = 0; i < amount_elem; i++)
                             {
-                                array[y, x - amount_elem + i].Position = (-1) *
+                                array[y - amount_elem + i, x].Position = (-1) *
                                     Math.Abs(array[y - amount_elem + i, x].Position);
                             }
                         }
@@ -173,8 +182,48 @@ namespace WinFormsApp1
 
             }
         }
+
+        public void Killer()
+        {   Random rnd = new Random();
+            for (int i = 0; i < HEIGHT; i++)
+            {
+                for (int j = 0; j < WHIDTH; j++)
+                {   
+                    if (array[i, j].Position < 0)
+                    {
+                        array[i, j].Position = rnd.Next(1, 7);
+                        array[i, j].BackColor = CircleButton.colors_button[array[i, j].Position];
+                    }
+                }
+            }
+        }
+
+        public void Subsidence_buttons()
+        {
+            for (int x = 0; x < WHIDTH; x++)
+            {
+                int y_hole = 0;
+                int amount_hole = 0;
+                for (int y = HEIGHT - 1; y >= 0; y--)
+                {
+                    if (array[y, x].Position < 0)
+                    {
+                        amount_hole++;
+                        if (amount_hole == 1) { y_hole = y; }
+
+
+                    }
+                    if (array[y, x].Position > 0 && amount_hole > 0)
+                    {
+                        array [y_hole, x].Position = array[y, x].Position;
+                        (array[y_hole, x].BackColor, array[y, x].BackColor) = (array[y, x].BackColor, array[y_hole, x].BackColor);
+                        y_hole--;
+                        array[y, x].Position = -1;
+                    }
+                }
+            }
+        }
+
+        
     }
-
-
-
 }

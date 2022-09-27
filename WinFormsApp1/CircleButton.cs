@@ -16,7 +16,7 @@ namespace WinFormsApp1
         public int Position_Y { get; set; }
         public int Position { get; set; }
 
-        public Dictionary<int, Color> colors_button = new Dictionary<int, Color>()
+        public static Dictionary<int, Color> colors_button = new Dictionary<int, Color>()
         {
             { 1, Color.Green },
             { 2, Color.Blue },
