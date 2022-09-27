@@ -9,19 +9,23 @@ namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        public const int WHIDTH = 6;
+        public const int BUTTON_SIZE = 50;
+        public const int INDENT_Y = 50;
+        public const int INDENT_X = 250;
+        public const int WHIDTH = 8;
         public const int HEIGHT = 8;
-        public int amount_elem = 0;
-        public int number_Group = 0;
-        public int amount_Group = 0;
+       
         public CircleButton[,] array = new CircleButton[HEIGHT, WHIDTH];
         public Form1()
         {
-            Console.WriteLine("lkfsdaj;");
+            Init();
+        }
+
+        public void Init()
+        {  
             InitializeComponent();
             Create_Board();
         }
-
         public void Create_Board()
         {
             for (int j = 0; j < HEIGHT; j++)
@@ -44,10 +48,10 @@ namespace WinFormsApp1
             circle_button.Position = rand.Next(1, 7);
             circle_button.Position_X = i;
             circle_button.Position_Y = j;
-            circle_button.Width = 45;
-            circle_button.Height = 45;
-            circle_button.Left = 200 + 45 * i;
-            circle_button.Top = 50 + 45 * j;
+            circle_button.Width = BUTTON_SIZE;
+            circle_button.Height = BUTTON_SIZE;
+            circle_button.Left = INDENT_X + BUTTON_SIZE * i;
+            circle_button.Top = INDENT_Y + BUTTON_SIZE * j;
             circle_button.BackColor = CircleButton.colors_button[circle_button.Position];
             return circle_button;
         }
@@ -95,6 +99,9 @@ namespace WinFormsApp1
 
         public void Algoritm_Searches_Group_Gorizontal()
         {
+            int amount_elem = 0;
+            int number_Group = 0;
+            int amount_Group = 0;         
             for (int y = 0; y < HEIGHT; y++)
             {
                 amount_elem = 0;
@@ -140,6 +147,9 @@ namespace WinFormsApp1
 
         public void Algoritm_Searches_Group_Vertical()
         {
+            int amount_elem = 0;
+            int number_Group = 0;
+            int amount_Group = 0;
             for (int x = 0; x < WHIDTH; x++)
             {
                 amount_elem = 0;
@@ -183,6 +193,14 @@ namespace WinFormsApp1
             }
         }
 
+        public void Start_Algoritm(int mode)
+        {
+            
+           
+
+           
+        }
+
         public void Killer()
         {   Random rnd = new Random();
             for (int i = 0; i < HEIGHT; i++)
@@ -224,6 +242,18 @@ namespace WinFormsApp1
             }
         }
 
-        
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Controls.Clear();
+            Init();
+        }
+
+        private void exitToMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 new_Form2 = new Form2();
+            this.Hide();
+            new_Form2.Show();
+        }
+
     }
 }
