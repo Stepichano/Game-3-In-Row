@@ -23,7 +23,7 @@ namespace WinFormsApp1
     {
       Init();
     }
-
+    /// Часть взаимодействия и создания елементов формы
     public void Init()
     {
       InitializeComponent();
@@ -56,7 +56,8 @@ namespace WinFormsApp1
       circle_button.Height = BUTTON_SIZE;
       circle_button.Left = INDENT_X + BUTTON_SIZE * i;
       circle_button.Top = INDENT_Y + BUTTON_SIZE * j;
-      circle_button.BackColor = CircleButton.colors_button[circle_button.Position];
+      circle_button.BackColor = 
+        CircleButton.colors_button[circle_button.Position];
       return circle_button;
     }
 
@@ -71,15 +72,9 @@ namespace WinFormsApp1
         {
           Swap_Circle_Buttons(CircleButton.Move_CircleButton, circle_button);
         }
-          Algoritm_Searches_Group_Gorizontal();
-          Algoritm_Searches_Group_Vertical();
-          Subsidence_buttons();
-          Killer();
+          Analysis_Bard();
           label2.Text = Score.ToString();
-          if (Score > SCORE_VICTORI)
-          {
-            Message_Victory();
-          }
+          Message_Victory();
         }
         CircleButton.Move_CircleButton.Width -= 5;
         CircleButton.Move_CircleButton.Height -= 5;
@@ -97,8 +92,10 @@ namespace WinFormsApp1
 
     public void Swap_Circle_Buttons(CircleButton button1, CircleButton button2)
     {
-      (button1.Position, button2.Position) = (button2.Position, button1.Position);
-      (button1.BackColor, button2.BackColor) = (button2.BackColor, button1.BackColor);
+      (button1.Position, button2.Position) = 
+        (button2.Position, button1.Position);
+      (button1.BackColor, button2.BackColor) = 
+        (button2.BackColor, button1.BackColor);
 
     }
 
@@ -112,10 +109,22 @@ namespace WinFormsApp1
           if (array[i, j].Position < 0)
           {
             array[i, j].Position = rnd.Next(1, 7);
-            array[i, j].BackColor = CircleButton.colors_button[array[i, j].Position];
+            array[i, j].BackColor = 
+              CircleButton.colors_button[array[i, j].Position];
           }
         }
       }
+    }
+
+    public void Analysis_Bard()
+      /// Анализ на слития кнопок, пока слития не закончатся
+    { 
+      while (Algoritm_Searches_Group_Gorizontal() +
+      Algoritm_Searches_Group_Vertical() != 0)
+      {
+        Subsidence_buttons();
+        Killer();
+      } 
     }
 
     /// Взаимодействие Form
@@ -129,6 +138,31 @@ namespace WinFormsApp1
       Form2 new_Form2 = new Form2();
       this.Hide();
       new_Form2.Show();
+    }
+
+    public void restart()
+    {
+      this.Controls.Clear();
+      Init();
+    }
+
+    public void Message_Victory()
+    {
+      if (Score > SCORE_VICTORI)
+      {
+        DialogResult result = MessageBox.Show("Вы хотите начать игру занова?",
+        "Победа!", MessageBoxButtons.YesNo);
+        if (result == DialogResult.Yes)
+        {
+          restart();
+        }
+        else if (result == DialogResult.No)
+        {
+          Form2 new_Form2 = new Form2();
+          this.Hide();
+          new_Form2.Show();
+        }
+      }
     }
 
     /// Часть Логика ///
@@ -148,7 +182,8 @@ namespace WinFormsApp1
           if (array[y, x].Position > 0 && amount_hole > 0)
           {
             array[y_hole, x].Position = array[y, x].Position;
-            (array[y_hole, x].BackColor, array[y, x].BackColor) = (array[y, x].BackColor, array[y_hole, x].BackColor);
+            (array[y_hole, x].BackColor, array[y, x].BackColor) =
+              (array[y, x].BackColor, array[y_hole, x].BackColor);
             y_hole--;
             array[y, x].Position = -1;
           }
@@ -156,7 +191,7 @@ namespace WinFormsApp1
       }
     }
 
-    public void Algoritm_Searches_Group_Vertical()
+    public int Algoritm_Searches_Group_Vertical()
     {
       int amount_elem = 0;
       int number_Group = 0;
@@ -177,7 +212,8 @@ namespace WinFormsApp1
               amount_Group++;
               for (int i = 0; i < amount_elem; i++)
               {
-                array[y - amount_elem + i, x].Position = (-1) * Math.Abs(array[y - amount_elem + i, x].Position);
+                array[y - amount_elem + i, x].Position =
+                  (-1) * Math.Abs(array[y - amount_elem + i, x].Position);
               }
             }
           }
@@ -198,9 +234,10 @@ namespace WinFormsApp1
         }
       }
       Score += score * amount_elem;
+      return amount_Group;
     }
 
-    public void Algoritm_Searches_Group_Gorizontal()
+    public int Algoritm_Searches_Group_Gorizontal()
     {
       int amount_elem = 0;
       int number_Group = 0;
@@ -221,7 +258,8 @@ namespace WinFormsApp1
               amount_Group++;
               for (int i = 0; i < amount_elem; i++)
               {
-                array[y, x - amount_elem + i].Position = (-1) * Math.Abs(array[y, x - amount_elem + i].Position);
+                array[y, x - amount_elem + i].Position =
+                  (-1) * Math.Abs(array[y, x - amount_elem + i].Position);
               }
             }
 
@@ -244,8 +282,11 @@ namespace WinFormsApp1
         }
       }
       Score += score * amount_Group;
+      return amount_Group;
     }
+
     public bool Test_In_Neigbors(CircleButton button1, CircleButton button2)
+      /// Проверка на расстояние между кнопками.
     {
       if ((Math.Abs(button1.Position_X - button2.Position_X) +
           Math.Abs(button1.Position_Y - button2.Position_Y)) == 1)
@@ -256,59 +297,45 @@ namespace WinFormsApp1
     }
 
     public bool Test_In_Collision(int x, int y, int position)
+      /// Если соседей в ряду больше или трое, то функция дает разрешение на
+      /// замену кнопок местами ///
     {
       if ((Collision_Gorizontall(x, y, 1, position) +
           Collision_Gorizontall(x, y, -1, position) >= 2) ||
-          (Collision_Vertical(x, y, 1, position)) +
-         Collision_Vertical(x, y, -1, position) >= 2)
+          ((Collision_Vertical(x, y, 1, position)) +
+         Collision_Vertical(x, y, -1, position) >= 2))
       {
         return true;
       } else { return false; }
     }
 
+    /// Две функции, для проверки соседей по горизонтали и вертикали.
+    /// Если соседи образуют ряд, то результат кол-во соседей в ряду ///
     public int Collision_Gorizontall(int x, int y, int d, int position)
+    
     {
       int counter = 0;
-      if ((x + 1 * d < WHIDTH && x + 1 * d > 0) && 
+      if ((x + 1 * d < WHIDTH && x + 1 * d >= 0) && 
         (array[y, x + 1 * d].Position == position))
       {
         counter++;
-        if ((x + 2 * d < WHIDTH && x + 2 * d > 0) && 
+        if ((x + 2 * d < WHIDTH && x + 2 * d >= 0) && 
           (array[y, x + 2 * d].Position == position)) { counter++; }
       }
       return counter;
     }
-
+     
     public int Collision_Vertical(int x, int y, int d, int position)
     {
       int counter = 0;
-      if ((y + 1 * d < HEIGHT && y + 1 * d > 0) &&
+      if ((y + 1 * d < HEIGHT && y + 1 * d >= 0) &&
         (array[y + 1 * d, x].Position == position))
       {
         counter++;
-        if ((y + 2 * d < HEIGHT && y + 2 * d > 0) &&
+        if ((y + 2 * d < HEIGHT && y + 2 * d >= 0) &&
           (array[y + 2 * d, x].Position == position)) { counter++; }
       }
       return counter;
-    }
-
-    public void restart()
-    {
-      this.Controls.Clear();
-      Init();
-    }
-    public void Message_Victory()
-    { DialogResult result = MessageBox.Show("Вы хотите начать игру занова?", "Победа!", MessageBoxButtons.YesNo);
-      if (result == DialogResult.Yes)
-      {
-        restart();
-      } else if (result == DialogResult.No)
-      {
-        Form2 new_Form2 = new Form2();
-        this.Hide();
-        new_Form2.Show();
-      }
-    }
-    
+    }   
   }
 }

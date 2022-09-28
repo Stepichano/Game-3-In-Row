@@ -12,9 +12,12 @@ namespace WinFormsApp1
     {   
         public static bool Move_is = false;
         public static CircleButton Move_CircleButton;
+        
+        /// Свойства для отслеживания позиции в массивие, которые присутсвуют
+        /// у каждой кнопки
         public int Position_X { get; set; }
         public int Position_Y { get; set; }
-        public int Position { get; set; }
+        public int Position { get; set; } 
 
         public static Dictionary<int, Color> colors_button = new Dictionary<int, Color>() 
         //// Колекция для выбора цветов у кнопки. Цвет выбирается по свойству Position 
@@ -29,6 +32,8 @@ namespace WinFormsApp1
             
 
         };
+
+        /// Придаем кнопке округлую форму
         protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
             GraphicsPath grPath = new GraphicsPath();
