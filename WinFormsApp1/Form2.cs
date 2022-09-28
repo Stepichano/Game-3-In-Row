@@ -19,7 +19,7 @@ namespace WinFormsApp1
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {   
             Form new_Form1 = new Form1();
             this.Hide();
             new_Form1.Show();

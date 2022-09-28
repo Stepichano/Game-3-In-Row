@@ -16,7 +16,9 @@ namespace WinFormsApp1
         public int Position_Y { get; set; }
         public int Position { get; set; }
 
-        public static Dictionary<int, Color> colors_button = new Dictionary<int, Color>()
+        public static Dictionary<int, Color> colors_button = new Dictionary<int, Color>() 
+        //// Колекция для выбора цветов у кнопки. Цвет выбирается по свойству Position 
+        //// Пример: CircleButton.colors_button[5]. Результат возвращает цвет Red ///
         {
             { 1, Color.Green },
             { 2, Color.Blue },
