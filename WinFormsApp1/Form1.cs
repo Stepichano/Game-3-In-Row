@@ -23,29 +23,32 @@ namespace WinFormsApp1
     {
       Init();
     }
-    /// Часть взаимодействия и создания елементов формы
+
+    // Часть взаимодействия и создания елементов формы
     public void Init()
     {
       InitializeComponent();
-      Create_Board();
+      CreateBoard();
     }
 
-    public void Create_Board()
+    public void CreateBoard() 
+      /// Формируем массив из кнопок и добавляем на форму ///
     {
       for (int j = 0; j < HEIGHT; j++)
       {
         for (int i = 0; i < WHIDTH; i++)
         {
-          CircleButton bufer_button = Create_Circle_Button(i, j);
+          CircleButton bufer_button = CreateCircleButton(i, j);
           this.Controls.Add(bufer_button);
           array[j, i] = bufer_button;
-          bufer_button.Click += new EventHandler(Press_Button);
+          bufer_button.Click += new EventHandler(PressButton);
         }
       }
 
     }
 
-    public CircleButton Create_Circle_Button(int i, int j)
+    public CircleButton CreateCircleButton(int i, int j)
+      /// Формирование кнопки ///
     {
       Random rand = new Random();
       CircleButton circle_button = new CircleButton();
@@ -56,23 +59,24 @@ namespace WinFormsApp1
       circle_button.Height = BUTTON_SIZE;
       circle_button.Left = INDENT_X + BUTTON_SIZE * i;
       circle_button.Top = INDENT_Y + BUTTON_SIZE * j;
-      circle_button.BackColor = 
+      circle_button.BackColor =
         CircleButton.colors_button[circle_button.Position];
       return circle_button;
     }
 
-    public void Press_Button(object sender, EventArgs e)
+    public void PressButton(object sender, EventArgs e)
+      /// Событие происходяищие при нажатии на кнопку ///
     {
       CircleButton circle_button = (CircleButton)sender;
       if (CircleButton.Move_is)
       {
         if (TestInNeigbors(CircleButton.Move_CircleButton, circle_button))
         {
-        if (TestInCollision(circle_button.Position_X, circle_button.Position_Y, CircleButton.Move_CircleButton.Position) == true)
-        {
-          Swap_Circle_Buttons(CircleButton.Move_CircleButton, circle_button);
-        }
-          Analysis_Bard();
+          if (TestInCollision(circle_button.Position_X, circle_button.Position_Y, CircleButton.Move_CircleButton.Position) == true)
+          {
+            SwapCircleButtons(CircleButton.Move_CircleButton, circle_button);
+          }
+          AnalysisBard();
           label2.Text = Score.ToString();
           MessageVictory();
         }
@@ -90,16 +94,18 @@ namespace WinFormsApp1
 
     }
 
-    public void Swap_Circle_Buttons(CircleButton button1, CircleButton button2)
+    public void SwapCircleButtons(CircleButton button1, CircleButton button2)
+      /// Меняем кнопки местами ///
     {
-      (button1.Position, button2.Position) = 
+      (button1.Position, button2.Position) =
         (button2.Position, button1.Position);
-      (button1.BackColor, button2.BackColor) = 
+      (button1.BackColor, button2.BackColor) =
         (button2.BackColor, button1.BackColor);
 
     }
 
     public void Killer()
+      /// Меняем цвет и позицию у мертвой кнопки ///
     {
       Random rnd = new Random();
       for (int i = 0; i < HEIGHT; i++)
@@ -109,25 +115,25 @@ namespace WinFormsApp1
           if (array[i, j].Position < 0)
           {
             array[i, j].Position = rnd.Next(1, 7);
-            array[i, j].BackColor = 
+            array[i, j].BackColor =
               CircleButton.colors_button[array[i, j].Position];
           }
         }
       }
     }
 
-    public void Analysis_Bard()
-      /// Анализ на слития кнопок, пока слития не закончатся
-    { 
+    public void AnalysisBard()
+    /// Анализ на слития кнопок, пока слития не закончатся
+    {
       while (AlgoritmSearchesGroupGorizontal() +
       AlgoritmSearchesGroupVertical() != 0)
       {
         SubsidenceButtons();
         Killer();
-      } 
+      }
     }
 
-    /// Взаимодействие Form
+    // Взаимодействие Form
     private void restartToolStripMenuItem_Click(object sender, EventArgs e)
     {
       restart();
@@ -165,8 +171,9 @@ namespace WinFormsApp1
       }
     }
 
-    /// Часть Логика ///
+    // Часть Логика 
     public void SubsidenceButtons()
+      /// Слитие кнопок наверх ///
     {
       for (int x = 0; x < WHIDTH; x++)
       {
@@ -192,6 +199,7 @@ namespace WinFormsApp1
     }
 
     public int AlgoritmSearchesGroupVertical()
+      /// Ищем группы по вертикали ///
     {
       int amount_elem = 0;
       int number_Group = 0;
@@ -220,7 +228,8 @@ namespace WinFormsApp1
           else
           {
             if (amount_elem > 2)
-            { score += amount_elem;
+            {
+              score += amount_elem;
               amount_Group++;
               for (int i = 0; i < amount_elem; i++)
               {
@@ -238,6 +247,7 @@ namespace WinFormsApp1
     }
 
     public int AlgoritmSearchesGroupGorizontal()
+      /// Ищем группы по горизонталли ///
     {
       int amount_elem = 0;
       int number_Group = 0;
@@ -286,7 +296,7 @@ namespace WinFormsApp1
     }
 
     public bool TestInNeigbors(CircleButton button1, CircleButton button2)
-      /// Проверка на расстояние между кнопками.
+      /// Проверка на расстояние между кнопками. ///
     {
       if ((Math.Abs(button1.Position_X - button2.Position_X) +
           Math.Abs(button1.Position_Y - button2.Position_Y)) == 1)
@@ -298,7 +308,7 @@ namespace WinFormsApp1
 
     public bool TestInCollision(int x, int y, int position)
       /// Если соседей в ряду больше или трое, то функция дает разрешение на
-      /// замену кнопок местами ///
+      /// замену кнопок местами /// (схема)
     {
       if ((CollisionGorizontall(x, y, 1, position) +
           CollisionGorizontall(x, y, -1, position) >= 2) ||
@@ -306,25 +316,26 @@ namespace WinFormsApp1
          CollisionVertical(x, y, -1, position) >= 2))
       {
         return true;
-      } else { return false; }
+      }
+      else { return false; }
     }
 
-    /// Две функции, для проверки соседей по горизонтали и вертикали.
-    /// Если соседи образуют ряд, то результат кол-во соседей в ряду ///
+    // Две функции, для проверки соседей по горизонтали и вертикали.
+    // Если соседи образуют ряд, то результат кол-во соседей в ряду 
     public int CollisionGorizontall(int x, int y, int d, int position)
-    
+
     {
       int counter = 0;
-      if ((x + 1 * d < WHIDTH && x + 1 * d >= 0) && 
+      if ((x + 1 * d < WHIDTH && x + 1 * d >= 0) &&
         (array[y, x + 1 * d].Position == position))
       {
         counter++;
-        if ((x + 2 * d < WHIDTH && x + 2 * d >= 0) && 
+        if ((x + 2 * d < WHIDTH && x + 2 * d >= 0) &&
           (array[y, x + 2 * d].Position == position)) { counter++; }
       }
       return counter;
     }
-     
+
     public int CollisionVertical(int x, int y, int d, int position)
     {
       int counter = 0;

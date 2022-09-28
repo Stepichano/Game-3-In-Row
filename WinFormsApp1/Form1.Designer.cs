@@ -31,7 +31,6 @@
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
       this.menuStrip1 = new System.Windows.Forms.MenuStrip();
       this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.exitToMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.label1 = new System.Windows.Forms.Label();
@@ -54,18 +53,11 @@
       // menuToolStripMenuItem
       // 
       this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpToolStripMenuItem,
             this.restartToolStripMenuItem,
             this.exitToMenuToolStripMenuItem});
       this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
-      this.menuToolStripMenuItem.Size = new System.Drawing.Size(73, 29);
-      this.menuToolStripMenuItem.Text = "Menu";
-      // 
-      // helpToolStripMenuItem
-      // 
-      this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-      this.helpToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-      this.helpToolStripMenuItem.Text = "Help";
+      this.menuToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+      this.menuToolStripMenuItem.Text = "File";
       // 
       // restartToolStripMenuItem
       // 
@@ -124,7 +116,6 @@
         #endregion
         private MenuStrip menuStrip1;
         private ToolStripMenuItem menuToolStripMenuItem;
-        private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem restartToolStripMenuItem;
         private ToolStripMenuItem exitToMenuToolStripMenuItem;
         private Label label1;
