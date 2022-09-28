@@ -66,15 +66,15 @@ namespace WinFormsApp1
       CircleButton circle_button = (CircleButton)sender;
       if (CircleButton.Move_is)
       {
-        if (Test_In_Neigbors(CircleButton.Move_CircleButton, circle_button))
+        if (TestInNeigbors(CircleButton.Move_CircleButton, circle_button))
         {
-        if (Test_In_Collision(circle_button.Position_X, circle_button.Position_Y, CircleButton.Move_CircleButton.Position) == true)
+        if (TestInCollision(circle_button.Position_X, circle_button.Position_Y, CircleButton.Move_CircleButton.Position) == true)
         {
           Swap_Circle_Buttons(CircleButton.Move_CircleButton, circle_button);
         }
           Analysis_Bard();
           label2.Text = Score.ToString();
-          Message_Victory();
+          MessageVictory();
         }
         CircleButton.Move_CircleButton.Width -= 5;
         CircleButton.Move_CircleButton.Height -= 5;
@@ -119,10 +119,10 @@ namespace WinFormsApp1
     public void Analysis_Bard()
       /// Анализ на слития кнопок, пока слития не закончатся
     { 
-      while (Algoritm_Searches_Group_Gorizontal() +
-      Algoritm_Searches_Group_Vertical() != 0)
+      while (AlgoritmSearchesGroupGorizontal() +
+      AlgoritmSearchesGroupVertical() != 0)
       {
-        Subsidence_buttons();
+        SubsidenceButtons();
         Killer();
       } 
     }
@@ -146,7 +146,7 @@ namespace WinFormsApp1
       Init();
     }
 
-    public void Message_Victory()
+    public void MessageVictory()
     {
       if (Score > SCORE_VICTORI)
       {
@@ -166,7 +166,7 @@ namespace WinFormsApp1
     }
 
     /// Часть Логика ///
-    public void Subsidence_buttons()
+    public void SubsidenceButtons()
     {
       for (int x = 0; x < WHIDTH; x++)
       {
@@ -191,7 +191,7 @@ namespace WinFormsApp1
       }
     }
 
-    public int Algoritm_Searches_Group_Vertical()
+    public int AlgoritmSearchesGroupVertical()
     {
       int amount_elem = 0;
       int number_Group = 0;
@@ -237,7 +237,7 @@ namespace WinFormsApp1
       return amount_Group;
     }
 
-    public int Algoritm_Searches_Group_Gorizontal()
+    public int AlgoritmSearchesGroupGorizontal()
     {
       int amount_elem = 0;
       int number_Group = 0;
@@ -285,7 +285,7 @@ namespace WinFormsApp1
       return amount_Group;
     }
 
-    public bool Test_In_Neigbors(CircleButton button1, CircleButton button2)
+    public bool TestInNeigbors(CircleButton button1, CircleButton button2)
       /// Проверка на расстояние между кнопками.
     {
       if ((Math.Abs(button1.Position_X - button2.Position_X) +
@@ -296,14 +296,14 @@ namespace WinFormsApp1
       return false;
     }
 
-    public bool Test_In_Collision(int x, int y, int position)
+    public bool TestInCollision(int x, int y, int position)
       /// Если соседей в ряду больше или трое, то функция дает разрешение на
       /// замену кнопок местами ///
     {
-      if ((Collision_Gorizontall(x, y, 1, position) +
-          Collision_Gorizontall(x, y, -1, position) >= 2) ||
-          ((Collision_Vertical(x, y, 1, position)) +
-         Collision_Vertical(x, y, -1, position) >= 2))
+      if ((CollisionGorizontall(x, y, 1, position) +
+          CollisionGorizontall(x, y, -1, position) >= 2) ||
+          ((CollisionVertical(x, y, 1, position)) +
+         CollisionVertical(x, y, -1, position) >= 2))
       {
         return true;
       } else { return false; }
@@ -311,7 +311,7 @@ namespace WinFormsApp1
 
     /// Две функции, для проверки соседей по горизонтали и вертикали.
     /// Если соседи образуют ряд, то результат кол-во соседей в ряду ///
-    public int Collision_Gorizontall(int x, int y, int d, int position)
+    public int CollisionGorizontall(int x, int y, int d, int position)
     
     {
       int counter = 0;
@@ -325,7 +325,7 @@ namespace WinFormsApp1
       return counter;
     }
      
-    public int Collision_Vertical(int x, int y, int d, int position)
+    public int CollisionVertical(int x, int y, int d, int position)
     {
       int counter = 0;
       if ((y + 1 * d < HEIGHT && y + 1 * d >= 0) &&
@@ -336,6 +336,6 @@ namespace WinFormsApp1
           (array[y + 2 * d, x].Position == position)) { counter++; }
       }
       return counter;
-    }   
+    }
   }
 }
